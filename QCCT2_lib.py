@@ -269,7 +269,6 @@ class CT_QC:
         selection = np.zeros((dimy,dimx), dtype=np.bool)
         selection[((x-x0)**2.+(y-y0)**2.)<=roirad**2.] = True
         
-        im[~selection] = -1000
         return im
 
     def _getlargestcc(self, segmentation):

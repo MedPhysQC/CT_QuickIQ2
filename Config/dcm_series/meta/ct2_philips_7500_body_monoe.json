@@ -104,10 +104,10 @@
         },
         "roisd": {
             "constraint_minlowhighmax": [
-                8.075,
-                8.55,
-                10.45,
-                10.925
+                7.65,
+                8.1,
+                9.9,
+                10.35
             ],
             "description": "noise in ROI in center of phantom",
             "display_level": 2,
@@ -116,10 +116,10 @@
         },
         "snr_hol": {
             "constraint_minlowhighmax": [
-                100.0,
-                106.25,
-                143.75,
-                150.0
+                88.88888888888889,
+                94.44444444444446,
+                127.77777777777777,
+                133.33333333333334
             ],
             "description": "(mean+1000) to noise ratio in ROI in center of phantom",
             "display_level": 1,
@@ -129,13 +129,46 @@
         "unif": {
             "constraint_minlowhighmax": [
                 -8,
-                -8,
-                8,
+                null,
+                null,
                 8
             ],
             "description": "Non-uniformity of phantom",
             "display_level": 2,
             "display_name": "Non-uniformity",
+            "units": "HU"
+        },
+        "unif_avg_0": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 0",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_1": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 1",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_2": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 2",
+            "display_level": 2,
             "units": "HU"
         }
     }

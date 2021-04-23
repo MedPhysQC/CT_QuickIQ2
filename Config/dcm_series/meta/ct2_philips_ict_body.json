@@ -127,10 +127,10 @@
         },
         "snr_hol": {
             "constraint_minlowhighmax": [
-                112.0,
-                119.0,
-                161.0,
-                168.0
+                114.28571428571429,
+                121.42857142857143,
+                164.28571428571428,
+                171.42857142857144
             ],
             "description": "(mean+1000) to noise ratio in ROI in center of phantom",
             "display_level": 1,
@@ -140,13 +140,57 @@
         "unif": {
             "constraint_minlowhighmax": [
                 -8,
-                -8,
-                8,
+                null,
+                null,
                 8
             ],
             "description": "Non-uniformity of phantom",
             "display_level": 2,
             "display_name": "Non-uniformity",
+            "units": "HU"
+        },
+        "unif_avg_0": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 0",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_1": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 1",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_2": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 2",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_3": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in uniformity ROI 3",
+            "display_level": 2,
             "units": "HU"
         }
     }

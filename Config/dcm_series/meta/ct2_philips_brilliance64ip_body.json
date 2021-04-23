@@ -28,8 +28,8 @@
         "MeanCenter": {
             "constraint_minlowhighmax": [
                 108,
-                108,
-                116,
+                null,
+                null,
                 116
             ],
             "description": "mean HU value in ROI in center of phantom",
@@ -127,10 +127,10 @@
         },
         "snr_hol": {
             "constraint_minlowhighmax": [
-                96.0,
-                102.0,
-                138.0,
-                144.0
+                95.65591397849461,
+                101.63440860215053,
+                137.50537634408602,
+                143.48387096774192
             ],
             "description": "(mean+1000) to noise ratio in ROI in center of phantom",
             "display_level": 1,
@@ -140,13 +140,57 @@
         "unif": {
             "constraint_minlowhighmax": [
                 -8,
-                -8,
-                8,
+                null,
+                null,
                 8
             ],
             "description": "Non-uniformity of phantom",
             "display_level": 2,
             "display_name": "Non-uniformity",
+            "units": "HU"
+        },
+        "unif_avg_0": {
+            "constraint_minlowhighmax": [
+                104,
+                null,
+                null,
+                120
+            ],
+            "description": "mean HU value in uniformity ROI 0",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_1": {
+            "constraint_minlowhighmax": [
+                104,
+                null,
+                null,
+                120
+            ],
+            "description": "mean HU value in uniformity ROI 1",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_2": {
+            "constraint_minlowhighmax": [
+                104,
+                null,
+                null,
+                120
+            ],
+            "description": "mean HU value in uniformity ROI 2",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "unif_avg_3": {
+            "constraint_minlowhighmax": [
+                104,
+                null,
+                null,
+                120
+            ],
+            "description": "mean HU value in uniformity ROI 3",
+            "display_level": 2,
             "units": "HU"
         }
     }
