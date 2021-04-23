@@ -1,0 +1,148 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {},
+            "params": {}
+        },
+        "header_series": {
+            "filters": {},
+            "params": {}
+        },
+        "qc_series": {
+            "filters": {},
+            "params": {
+                "linrois": [
+                    {
+                        "HU": 0,
+                        "angdeg": 0,
+                        "diammm": 20.0,
+                        "radmm": 0.0
+                    },
+                    {
+                        "HU": 927,
+                        "angdeg": 0,
+                        "cutdiammm": 55,
+                        "diammm": 20.0,
+                        "radmm": 75.0,
+                        "thresh_lo": 250
+                    },
+                    {
+                        "HU": -1000,
+                        "angdeg": -45,
+                        "diammm": 20.0,
+                        "radmm": 185.0
+                    },
+                    {
+                        "HU": 120,
+                        "angdeg": 0,
+                        "diam_maxmm": 299.0,
+                        "diam_minmm": 296.0,
+                        "radmm": 0.0
+                    }
+                ],
+                "noiserois": [
+                    {
+                        "angdeg": 0,
+                        "diammm": 97.5,
+                        "radmm": 0.0
+                    }
+                ],
+                "phantom": {
+                    "thresh_lo": -250
+                },
+                "unifrois": [
+                    {
+                        "angdeg": 0,
+                        "diammm": 30,
+                        "radmm": 0.0
+                    },
+                    {
+                        "angdeg": -90,
+                        "diammm": 30,
+                        "radmm": 120.0
+                    },
+                    {
+                        "angdeg": -45,
+                        "diammm": 30,
+                        "radmm": 120.0
+                    }
+                ]
+            }
+        }
+    },
+    "cfgformat": "20180910",
+    "comments": {
+        "author": "Arnold Schilham, UMCU",
+        "creator": "generate_config_json.py version 20180912",
+        "description": "CT/PerformanceQuickIQ2 for Philips IQon64",
+        "version": "20210420"
+    },
+    "info": {
+        "acqdatetime": {
+            "params": {}
+        },
+        "header_series": {
+            "params": {}
+        },
+        "qc_series": {
+            "params": {
+                "linrois": [
+                    {
+                        "HU": "linearity roi_0: groundtruth value (HU)",
+                        "angdeg": "linearity roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "linearity roi_0: diameter of roi (mm)",
+                        "radmm": "linearity roi_0: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "HU": "linearity roi_1: groundtruth value (HU)",
+                        "angdeg": "linearity roi_1: angular position of roi center wrt phantom center (degrees)",
+                        "cutdiammm": "linearity roi_1: diameter of roi around insert position to look for shifted object center (mm)",
+                        "diammm": "linearity roi_1: diameter of roi (mm)",
+                        "radmm": "linearity roi_1: radial position of roi center from phantom center (mm)",
+                        "thresh_lo": "linearity roi_1: minimum value when looking for insert (HU)"
+                    },
+                    {
+                        "HU": "linearity roi_2: groundtruth value (HU)",
+                        "angdeg": "linearity roi_2: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "linearity roi_2: diameter of roi (mm)",
+                        "radmm": "linearity roi_2: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "HU": "linearity roi_3: groundtruth value (HU)",
+                        "angdeg": "linearity roi_3: angular position of roi center wrt phantom center (degrees)",
+                        "diam_maxmm": "linearity roi_3: maximum diameter of ring shaped roi (mm)",
+                        "diam_minmm": "linearity roi_3: minimum diameter of ring shaped roi (mm)",
+                        "radmm": "linearity roi_3: radial position of roi center from phantom center (mm)"
+                    }
+                ],
+                "noiserois": [
+                    {
+                        "angdeg": "noise roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "noise roi_0: diameter of roi (mm)",
+                        "radmm": "noise roi_0: radial position of roi center from phantom center (mm)"
+                    }
+                ],
+                "phantom": {
+                    "thresh_lo": "minimal value when looking for phantom (HU)"
+                },
+                "unifrois": [
+                    {
+                        "angdeg": "uniformity roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_0: diameter of roi (mm)",
+                        "radmm": "uniformity roi_0: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "angdeg": "uniformity roi_1: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_1: diameter of roi (mm)",
+                        "radmm": "uniformity roi_1: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "angdeg": "uniformity roi_2: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_2: diameter of roi (mm)",
+                        "radmm": "uniformity roi_2: radial position of roi center from phantom center (mm)"
+                    }
+                ]
+            }
+        }
+    }
+}

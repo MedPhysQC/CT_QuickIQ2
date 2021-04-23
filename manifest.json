@@ -1,0 +1,21 @@
+{
+    "info": {
+        "dbversion": "20180209",
+        "magic": "wad-qc-factory",
+        "wadqcversion": "2.0.33"
+    },
+    "module": {
+        "description": "CT QuickIQ2",
+        "executable": "QCCT2_wadwrapper.py",
+        "name": "CT_QuickIQ2",
+        "code": "python",
+        "dependencies": [
+            "pillow",
+            "numpy",
+            "pydicom",
+            "scipy",
+            "matplotlib",
+            "scikit-image"
+        ]
+    }
+}

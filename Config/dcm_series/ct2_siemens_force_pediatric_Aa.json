@@ -1,0 +1,132 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {},
+            "params": {}
+        },
+        "header_series": {
+            "filters": {},
+            "params": {}
+        },
+        "qc_series": {
+            "filters": {},
+            "params": {
+                "linrois": [
+                    {
+                        "HU": 0,
+                        "angdeg": 0,
+                        "diammm": 18.0,
+                        "radmm": 0.0
+                    },
+                    {
+                        "HU": -1000,
+                        "angdeg": -45,
+                        "diammm": 18.0,
+                        "radmm": 130.0
+                    },
+                    {
+                        "HU": 100.0,
+                        "angdeg": 0,
+                        "diam_maxmm": 196.0,
+                        "diam_minmm": 193.0,
+                        "radmm": 0.0
+                    }
+                ],
+                "noiserois": [
+                    {
+                        "angdeg": 0,
+                        "diammm": 72,
+                        "radmm": 0.0
+                    }
+                ],
+                "phantom": {
+                    "thresh_lo": -250
+                },
+                "unifrois": [
+                    {
+                        "angdeg": 0,
+                        "diammm": 18,
+                        "radmm": 0.0
+                    },
+                    {
+                        "angdeg": -90,
+                        "diammm": 18,
+                        "radmm": 65.0
+                    },
+                    {
+                        "angdeg": 0,
+                        "diammm": 18,
+                        "radmm": 65.0
+                    }
+                ]
+            }
+        }
+    },
+    "cfgformat": "20180910",
+    "comments": {
+        "author": "Arnold Schilham, UMCU",
+        "creator": "generate_config_json.py version 20180912",
+        "description": "CT/PerformanceQuickIQ2 for Siemens SOMATOM Force",
+        "version": "20210420"
+    },
+    "info": {
+        "acqdatetime": {
+            "params": {}
+        },
+        "header_series": {
+            "params": {}
+        },
+        "qc_series": {
+            "params": {
+                "linrois": [
+                    {
+                        "HU": "linearity roi_0: groundtruth value (HU)",
+                        "angdeg": "linearity roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "linearity roi_0: diameter of roi (mm)",
+                        "radmm": "linearity roi_0: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "HU": "linearity roi_1: groundtruth value (HU)",
+                        "angdeg": "linearity roi_1: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "linearity roi_1: diameter of roi (mm)",
+                        "radmm": "linearity roi_1: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "HU": "linearity roi_2: groundtruth value (HU)",
+                        "angdeg": "linearity roi_2: angular position of roi center wrt phantom center (degrees)",
+                        "diam_maxmm": "linearity roi_2: maximum diameter of ring shaped roi (mm)",
+                        "diam_minmm": "linearity roi_2: minimum diameter of ring shaped roi (mm)",
+                        "radmm": "linearity roi_2: radial position of roi center from phantom center (mm)"
+                    }
+                ],
+                "noiserois": [
+                    {
+                        "angdeg": "noise roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "noise roi_0: diameter of roi (mm)",
+                        "radmm": "noise roi_0: radial position of roi center from phantom center (mm)"
+                    }
+                ],
+                "phantom": {
+                    "thresh_lo": "minimal value when looking for phantom (HU)"
+                },
+                "unifrois": [
+                    {
+                        "angdeg": "uniformity roi_0: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_0: diameter of roi (mm)",
+                        "radmm": "uniformity roi_0: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "angdeg": "uniformity roi_1: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_1: diameter of roi (mm)",
+                        "radmm": "uniformity roi_1: radial position of roi center from phantom center (mm)"
+                    },
+                    {
+                        "angdeg": "uniformity roi_2: angular position of roi center wrt phantom center (degrees)",
+                        "diammm": "uniformity roi_2: diameter of roi (mm)",
+                        "radmm": "uniformity roi_2: radial position of roi center from phantom center (mm)"
+                    }
+                ]
+            }
+        }
+    }
+}
