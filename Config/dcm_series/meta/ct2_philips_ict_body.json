@@ -80,10 +80,10 @@
         },
         "lin_avg_3": {
             "constraint_minlowhighmax": [
-                112,
+                119,
                 null,
                 null,
-                128
+                135
             ],
             "description": "mean HU value in linearity ROI 3",
             "display_level": 2,
