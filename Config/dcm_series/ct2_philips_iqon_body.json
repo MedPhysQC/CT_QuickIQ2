@@ -33,7 +33,7 @@
                         "thresh_lo": 250
                     },
                     {
-                        "HU": 120,
+                        "HU": 130,
                         "angdeg": 0,
                         "diam_maxmm": 299.0,
                         "diam_minmm": 296.0,

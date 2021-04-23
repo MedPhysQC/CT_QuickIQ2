@@ -37,12 +37,6 @@
             "display_name": "HU Water",
             "units": "HU"
         },
-        "MeanHigh": {
-            "description": "mean value for high HU object",
-            "display_level": 1,
-            "display_name": "HU High",
-            "units": "HU"
-        },
         "Patient Position": {
             "constraint_equals": "HFS",
             "display_level": 1
@@ -51,6 +45,61 @@
             "display_level": 1,
             "display_name": "Protocol"
         },
+        "lin_avg_0": {
+            "constraint_minlowhighmax": [
+                -8,
+                null,
+                null,
+                8
+            ],
+            "description": "mean HU value in linearity ROI 0",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "lin_avg_1": {
+            "constraint_minlowhighmax": [
+                -1008,
+                null,
+                null,
+                -992
+            ],
+            "description": "mean HU value in linearity ROI 1",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "lin_avg_2": {
+            "constraint_minlowhighmax": [
+                -28,
+                null,
+                null,
+                -12
+            ],
+            "description": "mean HU value in linearity ROI 2",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "lin_avg_3": {
+            "constraint_minlowhighmax": [
+                152.0,
+                null,
+                null,
+                168.0
+            ],
+            "description": "mean HU value in linearity ROI 3",
+            "display_level": 2,
+            "units": "HU"
+        },
+        "lin_avg_4": {
+            "constraint_minlowhighmax": [
+                152.0,
+                null,
+                null,
+                168.0
+            ],
+            "description": "mean HU value in linearity ROI 4",
+            "display_level": 2,
+            "units": "HU"
+        },
         "linearity": {
             "constraint_minlowhighmax": [
                 0.9,
@@ -58,7 +107,7 @@
                 1.075,
                 1.1
             ],
-            "description": "r2 coefficient of linear fit between measured and reference HU values",
+            "description": "r2 coefficient of linear fit between measured and reference HU values. The reference values are defined in the config.",
             "display_level": 1,
             "display_name": "HU linearity fit",
             "units": ""
@@ -70,7 +119,7 @@
                 7,
                 8
             ],
-            "description": "max deviation from reference HU values for objects in phantom",
+            "description": "Max deviation from reference HU values for objects in phantom. The reference values are defined in the config.",
             "display_level": 2,
             "display_name": "HU Max Deviation",
             "units": "HU"

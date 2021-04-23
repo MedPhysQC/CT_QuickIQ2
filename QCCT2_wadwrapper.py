@@ -118,7 +118,6 @@ def qc_series(data, results, action, override={}):
     res = [
         ('MeanCenter', cs.unif_roiavg[0]),
         ('MeanAir', cs.lin_roiavg[1]),
-        ('MeanHigh', max(cs.lin_roiavg)),
         ('shiftxpx', cs.phantom_xcycdiampx[0]-(wid-1)/2.),
         ('shiftypx', cs.phantom_xcycdiampx[1]-(hei-1)/2.),
 
@@ -143,7 +142,7 @@ def qc_series(data, results, action, override={}):
     for i,(avg,std,gt) in enumerate(zip(cs.lin_roiavg, cs.lin_roistd, cs.lin_roiGT)):
         results.addFloat("lin_avg_{}".format(i), avg)
         results.addFloat("lin_std_{}".format(i), std)
-        results.addFloat("lin_gt_{}".format(i), gt)
+        #results.addFloat("lin_gt_{}".format(i), gt)
  
     ## Build thumbnail
     prefix = results._out_path.split(".json")[0]
