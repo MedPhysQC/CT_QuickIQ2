@@ -19,13 +19,13 @@
                         "radmm": 0.0
                     },
                     {
-                        "HU": 150.0,
+                        "HU": -1000,
                         "angdeg": -45,
                         "diammm": 20.0,
                         "radmm": 185.0
                     },
                     {
-                        "HU": 110,
+                        "HU": 150.0,
                         "angdeg": 0,
                         "diam_maxmm": 296.0,
                         "diam_minmm": 294.0,

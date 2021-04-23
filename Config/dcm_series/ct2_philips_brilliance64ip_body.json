@@ -19,6 +19,12 @@
                         "radmm": 0.0
                     },
                     {
+                        "HU": -1000,
+                        "angdeg": -45,
+                        "diammm": 20.0,
+                        "radmm": 185.0
+                    },
+                    {
                         "HU": 1.2,
                         "angdeg": 180,
                         "cutdiammm": 55,
@@ -33,12 +39,6 @@
                         "diammm": 20.0,
                         "radmm": 75.0,
                         "thresh_lo": 250
-                    },
-                    {
-                        "HU": -1000,
-                        "angdeg": -45,
-                        "diammm": 20.0,
-                        "radmm": 185.0
                     }
                 ],
                 "noiserois": [
@@ -97,10 +97,8 @@
                     {
                         "HU": "linearity roi_1: groundtruth value (HU)",
                         "angdeg": "linearity roi_1: angular position of roi center wrt phantom center (degrees)",
-                        "cutdiammm": "linearity roi_1: diameter of roi around insert position to look for shifted object center (mm)",
                         "diammm": "linearity roi_1: diameter of roi (mm)",
-                        "radmm": "linearity roi_1: radial position of roi center from phantom center (mm)",
-                        "thresh_hi": "linearity roi_1: maximum value when looking for insert (HU)"
+                        "radmm": "linearity roi_1: radial position of roi center from phantom center (mm)"
                     },
                     {
                         "HU": "linearity roi_2: groundtruth value (HU)",
@@ -108,13 +106,15 @@
                         "cutdiammm": "linearity roi_2: diameter of roi around insert position to look for shifted object center (mm)",
                         "diammm": "linearity roi_2: diameter of roi (mm)",
                         "radmm": "linearity roi_2: radial position of roi center from phantom center (mm)",
-                        "thresh_lo": "linearity roi_2: minimum value when looking for insert (HU)"
+                        "thresh_hi": "linearity roi_2: maximum value when looking for insert (HU)"
                     },
                     {
                         "HU": "linearity roi_3: groundtruth value (HU)",
                         "angdeg": "linearity roi_3: angular position of roi center wrt phantom center (degrees)",
+                        "cutdiammm": "linearity roi_3: diameter of roi around insert position to look for shifted object center (mm)",
                         "diammm": "linearity roi_3: diameter of roi (mm)",
-                        "radmm": "linearity roi_3: radial position of roi center from phantom center (mm)"
+                        "radmm": "linearity roi_3: radial position of roi center from phantom center (mm)",
+                        "thresh_lo": "linearity roi_3: minimum value when looking for insert (HU)"
                     }
                 ],
                 "noiserois": [

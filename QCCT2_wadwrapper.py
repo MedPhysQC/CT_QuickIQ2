@@ -117,7 +117,7 @@ def qc_series(data, results, action, override={}):
     hei,wid = qclib.work_im.shape
     res = [
         ('MeanCenter', cs.unif_roiavg[0]),
-        ('MeanAir', cs.lin_roiavg[2]),
+        ('MeanAir', cs.lin_roiavg[1]),
         ('MeanHigh', max(cs.lin_roiavg)),
         ('shiftxpx', cs.phantom_xcycdiampx[0]-(wid-1)/2.),
         ('shiftypx', cs.phantom_xcycdiampx[1]-(hei-1)/2.),
