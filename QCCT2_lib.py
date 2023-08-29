@@ -15,6 +15,8 @@
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
 Changelog:
+    20230217: removed double result "station name"
+    20230213: added methods to prevent recalculation of insert locations; added rad uniformity
     20210422: largest components for find cylinder; no blur for cylinder by default
     20210415: completely rewritten, for easier maintenance
     20210413: more comments; allow head and body swap; changes to allow rotated inserts
@@ -39,7 +41,7 @@ Changelog:
 TODO:
  o scanner definition from params: phantom diam, inserts (materials, positions), materials
 """
-__version__ = '20210422'
+__version__ = '20230213'
 __author__ = 'aschilham'
 TRANSPOSED_XY = False # normal!
 
@@ -151,6 +153,8 @@ class CTStruct:
         self.unif_roiavg = [] # Average HU in rois
         self.unif_roistd = [] # Standard Deviation HU in rois
         self.uniformity = -1. # non-uniformity
+
+        self.raduniformity_dev = 0. # radial non-uniformity in HU
 
         # noise
         self.noise_roiavg = [] # Average HU in rois
@@ -266,7 +270,7 @@ class CT_QC:
         else:
             x,y = np.meshgrid( np.arange(0,dimy), np.arange(0,dimx), indexing='xy' )
 
-        selection = np.zeros((dimy,dimx), dtype=np.bool)
+        selection = np.zeros((dimy,dimx), dtype=bool)
         selection[((x-x0)**2.+(y-y0)**2.)<=roirad**2.] = True
         
         return im
@@ -353,7 +357,7 @@ class CT_QC:
             else:
                 x,y = np.meshgrid( np.arange(0,dimy), np.arange(0,dimx), indexing='xy' )
     
-            selection = np.zeros((dimy,dimx), dtype=np.bool)
+            selection = np.zeros((dimy,dimx), dtype=bool)
             selection[((x-roi["xc"])**2.+(y-roi["yc"])**2.)<=roirad**2.] = True
         elif roi['type'] == "ring":
             # a ring
@@ -367,7 +371,7 @@ class CT_QC:
             else:
                 x,y = np.meshgrid( np.arange(0,dimy), np.arange(0,dimx), indexing='xy' )
     
-            selection = np.zeros((dimy,dimx), dtype=np.bool)
+            selection = np.zeros((dimy,dimx), dtype=bool)
             selection[((x-roi["xc"])**2.+(y-roi["yc"])**2.)<=roiradmax**2.] = True
             selection[((x-roi["xc"])**2.+(y-roi["yc"])**2.)<=roiradmin**2.] = False
  
@@ -426,6 +430,13 @@ class CT_QC:
         if error:
             msg = "Error in Linearity"
             return error, msg
+
+        # radial uniformity
+        if 'raduniformity' in pars.keys():
+            error = self.qc_raduniformity(pars)
+            if error:
+                msg = "Error in RadUniformity"
+                return error, msg
 
         return error, msg
 
@@ -568,6 +579,7 @@ class CT_QC:
         rois = pars['linrois']
         self.results.lin_roiavg = []
         self.results.lin_roistd = []
+        self.results.lin_roiGT = []
         for i,roi in enumerate(rois):
             # center of roi
             radpx  = self.phantommm2pix(roi.get('radmm',0.))
@@ -608,23 +620,33 @@ class CT_QC:
                         plt.title("cut-out linearity {}".format(i))
                         plt.imshow(cut_im, cmap=plt.cm.gray)
         
-                    error,xcycdiampx = self._find_cylinder(cut_im, roi, title="linearity {}".format(i))
-                    
+                    if len(self.results.lin_xcycdiampx) < i+1:
+                        error,xcycdiampx = self._find_cylinder(cut_im, roi, title="linearity {}".format(i))
+                        xcycdiampx = [xcycdiampx[0] + xstart, xcycdiampx[1] + ystart, diampx]
+                        self.results.lin_xcycdiampx.append(xcycdiampx)
+                    else:
+                        xcycdiampx = self.results.lin_xcycdiampx[i]
+
                     # calc avg and stdev
-                    avg, std = self._roi_stats(self.work_im, {'type': "disc", "xc": xstart+xcycdiampx[0], "yc":ystart+xcycdiampx[1], "diam":diampx},
+                    avg, std = self._roi_stats(self.work_im, {'type': "disc", "xc": xcycdiampx[0], "yc":xcycdiampx[1], "diam":xcycdiampx[2]},
                                            title="linearity {}".format(i))
-                    xcycdiampx = [xstart+xcycdiampx[0], ystart+xcycdiampx[1], diampx]
                 else:
                     # normal disc with thresholds
                     # calc avg and stdev
-                    avg, std = self._roi_stats(self.work_im, {'type': "disc", "xc": x0, "yc":y0, "diam":diampx},
+                    if len(self.results.lin_xcycdiampx) < i+1:
+                        xcycdiampx = [x0, y0, diampx]
+                        self.results.lin_xcycdiampx.append(xcycdiampx)
+                    else:
+                        xcycdiampx = self.results.lin_xcycdiampx[i]
+
+                    # calc avg and stdev
+                    avg, std = self._roi_stats(self.work_im, {'type': "disc", "xc": xcycdiampx[0], "yc":xcycdiampx[1], "diam":xcycdiampx[2]},
                                            title="linearity {}".format(i))
-                    xcycdiampx = [x0, y0, diampx]
 
             self.results.lin_roiavg.append(avg)
             self.results.lin_roistd.append(std)
             self.results.lin_roiGT.append(roi['HU'])
-            self.results.lin_xcycdiampx.append(xcycdiampx)
+            
 
             # for gui
             if None in [diam_min, diam_min]:
@@ -641,6 +663,109 @@ class CT_QC:
 
         return error
     
+    def qc_raduniformity(self, pars, prefix=""):
+        """
+        Calculate uniformity radially
+        1a. Just use the image center as the Iso center, because we are interested in rings due to rotation
+        2a. Transform into r,theta image. Exclude given linearity regions 
+        """
+        if not 'raduniformity' in pars.keys():
+            error = False
+            return error
+
+        # 1. find shifted center of phantom
+        phantom = pars['phantom']
+        if self.results.phantom_xcycdiampx == []:
+            error,self.results.phantom_xcycdiampx = self._find_cylinder(self.work_im, phantom, title="phantom")
+        else:
+            error = False
+        if error:
+            print("[raduniformity] cannot find phantom center")
+            return error
+
+        # remove inserts
+        #workims = [ copy.deepcopy(self.work_im) ]
+        workims = [ copy.deepcopy(self.work_im) ]
+        if len(np.shape(self.pixeldataIn))==3:
+            workims = [ copy.deepcopy(im) for im in self.pixeldataIn ]
+            #workims = [ scipy.ndimage.gaussian_filter(im, sigma=1.5, order=0) for im in self.pixeldataIn ]
+        figa,axa = plt.subplots()
+        axa.set_xlabel("mm")
+        axa.set_ylabel("HU")
+        axa.grid()
+
+        mix = 0
+        mavg = -1
+        mim = None
+        rect_image = []
+        for ix,work in enumerate(workims):
+            for roi in self.results.lin_xcycdiampx:
+                x0,y0,dpx = roi
+                if isinstance(dpx, (tuple,list)):
+                    continue
+                rr = dpx/2*1.5
+                avg, std = self._roi_stats(self.work_im, {'type': "disc", "xc": x0, "yc":y0, "diam":dpx},
+                                       title="ignore")
+                if np.abs(avg)>10:
+                    work[int(y0-rr):int(y0+rr),int(x0-rr):int(x0+rr)] = 0.
+            work = scipy.ndimage.gaussian_filter(work, sigma=pars['raduniformity']['blurpx'], order=0)
+            
+            # 2. determine usable radius
+            unifradpx = self.phantommm2pix(pars['raduniformity']["waterdiammm"]/2.)
+            ydim,xdim = np.shape(work)
+            y0,x0 = [(ydim-1)/2., (xdim-1)/2.]
+            #x0, y0, dummy = self.results.phantom_xcycdiampx
+            rmax = unifradpx-np.max([np.abs(self.results.phantom_xcycdiampx[0]-x0), np.abs(self.results.phantom_xcycdiampx[1]-y0)])
+            
+            # 3. interpolate to r,theta
+            ang = np.linspace(0, 2.*np.pi, int(2*np.pi*rmax), endpoint=False)
+            rad = np.linspace(0, int(rmax), int(rmax), endpoint=True)
+            an,ra = scipy.meshgrid(ang,rad)
+    
+            xi = x0+ra*np.sin(an)
+            yi = y0+ra*np.cos(an)
+    
+            coords = np.array( [yi,xi] )
+            rect_image.append(scipy.ndimage.map_coordinates(work, coords, order=0))
+                
+            avg = np.array([np.average(rect_image[-1][y,:]) for y in range(len(rad))])
+            axa.plot(rad/self.phantommm2pix(1.), avg, label="{}".format(ix))
+            mm = max(np.abs(max(avg)), np.abs(min(avg)))
+            if mm>mavg:
+                mix = ix
+                mavg = mm
+
+        axa.legend()
+        plt.savefig("{}radunif_plot.jpg".format(prefix), bbox_inches='tight')
+
+
+        # show worst image
+        fig,ax = plt.subplots()
+        #ax.imshow(workims[mix], cmap='gray', vmin=-10, vmax=10)
+        ax.imshow(self.pixeldataIn[mix], cmap='gray', vmin=-10, vmax=10)
+        plt.subplots_adjust(0,0,1,1,0,0)
+        for ax in fig.axes:
+            ax.axis('off')
+            ax.margins(0,0)
+            ax.xaxis.set_major_locator(plt.NullLocator())
+            ax.yaxis.set_major_locator(plt.NullLocator())
+
+        plt.savefig("{}radunif_worst.jpg".format(prefix), bbox_inches='tight')
+
+        fig,ax = plt.subplots()
+        ax.imshow(rect_image[mix], origin='lower', cmap='gray')
+        ax.set_xlabel("angle [pi rad]")
+        ax.set_ylabel("distance")
+        fig.canvas.draw()
+        ticks = [0.5, 1., 1.5, 2.]
+        ax.set_xticks([len(ang)*tt/2. for tt in ticks])
+        ax.set_xticklabels(["{:.2f}".format(tt) for tt in ticks]) 
+        plt.savefig("{}radunif_unfold.jpg".format(prefix), bbox_inches='tight')
+        #plt.show()
+        
+        self.results.raduniformity_dev = mavg
+        return error
+
 #----------------------------------------------------------------------
 #----------------------------------------------------------------------
     def dicom_info(self,cs,info='dicom'):
@@ -658,7 +783,6 @@ class CT_QC:
                 ["0008,0070", "Manufacturer"],
                 ["0008,1010", "Station Name"],
                 ["0008,103e", "Series Description"],
-                ["0008,1010", "Station Name"],
                 ["0018,0022", "Scan Options"], # Philips
                 ["0018,0050", "Slice Thickness"],
                 ["0018,0060", "kVp"],
