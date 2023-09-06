@@ -15,6 +15,7 @@
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
 Changelog:
+    20230906: fix for Pillow 10.0.0
     20230217: removed double result "station name"
     20230213: added methods to prevent recalculation of insert locations; added rad uniformity
     20210422: largest components for find cylinder; no blur for cylinder by default
@@ -41,7 +42,7 @@ Changelog:
 TODO:
  o scanner definition from params: phantom diam, inserts (materials, positions), materials
 """
-__version__ = '20230213'
+__version__ = '20230906'
 __author__ = 'aschilham'
 TRANSPOSED_XY = False # normal!
 
@@ -135,7 +136,11 @@ def save_image_with_rois(image, fname, circle_rois=[], rect_rois=[], poly_rois=[
     imsi = im.size
     if max(imsi)>2048:
         ratio = 2048./max(imsi)
-        im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)), Image.ANTIALIAS)
+        try:
+            im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.ANTIALIAS)
+        except AttributeError as e:
+            # PIL 10.0.0 deprecates ANTIALIAS
+            im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.Resampling.LANCZOS)
     im.save(fname)
     
 class CTStruct:
